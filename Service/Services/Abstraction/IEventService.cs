@@ -1,5 +1,4 @@
-﻿using EventApi.Data.DTOs.CategoryDtos;
-using EventApi.Data.DTOs.EventDTOs;
+﻿using EventApi.Data.DTOs.EventDTOs;
 using System.Net;
 
 namespace Service.Services.Abstraction
