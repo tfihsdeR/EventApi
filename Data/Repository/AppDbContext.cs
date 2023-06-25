@@ -17,8 +17,6 @@ namespace EventApi.Data.Repository
 			modelBuilder.Entity<Event>().HasOne(e => e.Venue).WithMany(v => v.Events).HasForeignKey(e => e.VenueId);
 			modelBuilder.Entity<Event>().HasOne(e => e.PriceBySeat).WithMany(pbs => pbs.Events).HasForeignKey(e => e.PriceBySeatId);
 			modelBuilder.Entity<Image>().HasOne(i => i.Event).WithMany(e => e.Images).HasForeignKey(i => i.EventId);
-
-			//modelBuilder.Entity<PriceBySeat>().ToTable("PriceBySeats");
 		}
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

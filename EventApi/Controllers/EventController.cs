@@ -2,6 +2,8 @@
 using EventApi.Data.Entities;
 using EventApi.Data.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Service.Services.Abstraction;
+using System.Net;
 
 namespace EventApi.Controllers
 {
@@ -10,20 +12,17 @@ namespace EventApi.Controllers
 	public class EventController : ControllerBase
 	{
 		AppDbContext context = new AppDbContext();
+		readonly IEventService _eventService;
+
+		public EventController(IEventService eventService)
+		{
+			_eventService = eventService;
+		}
 
 		[HttpGet]
 		public IActionResult GetAllEvents()
 		{
-			List<GetAllEventResponseDto> getAllEventResponseDto = context.Events.Select(e => new GetAllEventResponseDto()
-			{
-				Id = e.Id,
-				Description = e.Description,
-				StartDate = e.StartDate,
-				EndDate = e.EndDate,
-				VenueId = e.VenueId,
-				CategoryId = e.CategoryId,
-				PriceBySeatId = e.PriceBySeatId
-			}).ToList();
+			List<GetAllEventResponseDto> getAllEventResponseDto = _eventService.GetAllEvents();
 
 			if (getAllEventResponseDto.Any())
 			{
@@ -36,18 +35,9 @@ namespace EventApi.Controllers
 		}
 
 		[HttpGet("{id}")]
-		public IActionResult GetByIdEvent(int id)
+		public IActionResult GetEventById(int id)
 		{
-			GetByIdEventResponseDto? getByIdEventResponseDto = context.Events.Select(e => new GetByIdEventResponseDto()
-			{
-				Id = e.Id,
-				Description = e.Description,
-				StartDate = e.StartDate,
-				EndDate = e.EndDate,
-				VenueId = e.VenueId,
-				CategoryId = e.CategoryId,
-				PriceBySeatId = e.PriceBySeatId
-			}).FirstOrDefault(dto => dto.Id == id);
+			GetByIdEventResponseDto? getByIdEventResponseDto = _eventService.GetEventById(id);
 
 			if (getByIdEventResponseDto != null)
 			{
@@ -62,29 +52,7 @@ namespace EventApi.Controllers
 		[HttpPost]
 		public IActionResult CreateEvent(CreateEventRequestDto eventDto)
 		{
-			Event _event = new Event()
-			{
-				Description = eventDto.Description,
-				StartDate = eventDto.StartDate,
-				EndDate = eventDto.EndDate,
-				VenueId = eventDto.VenueId,
-				CategoryId = eventDto.CategoryId,
-				PriceBySeatId = eventDto.PriceBySeatId
-			};
-
-			context.Events.Add(_event);
-			context.SaveChanges();
-
-			CreateEventResponseDto createEventResponseDto = new CreateEventResponseDto()
-			{
-				Id = _event.Id,
-				Description = _event.Description,
-				StartDate = _event.StartDate,
-				EndDate = _event.EndDate,
-				VenueId = _event.VenueId,
-				CategoryId = _event.CategoryId,
-				PriceBySeatId = _event.PriceBySeatId
-			};
+			CreateEventResponseDto createEventResponseDto = _eventService.CreateEvent(eventDto);
 
 			return Ok(createEventResponseDto);
 		}
@@ -92,46 +60,27 @@ namespace EventApi.Controllers
 		[HttpPut("{id}")]
 		public IActionResult UpdateEvent(UpdateEventRequestDto eventDto, int id)
 		{
-			Event? _event = context.Events.FirstOrDefault(e => e.Id == id);
-			if (_event == null)
+			UpdateEventResponseDto updateEventResponseDto = _eventService.UpdateEvent(id, eventDto);
+			if (updateEventResponseDto != null)
 			{
-				return NoContent();
+				return Ok(updateEventResponseDto);
 			}
 			else
 			{
-				_event.Description = eventDto.Description;
-				_event.StartDate = eventDto.StartDate;
-				_event.EndDate = eventDto.EndDate;
-				_event.VenueId = eventDto.VenueId;
-				_event.CategoryId = eventDto.CategoryId;
-				_event.PriceBySeatId = eventDto.PriceBySeatId;
-
-				UpdateEventResponseDto updateEventResponseDto = new UpdateEventResponseDto()
-				{
-					Id = _event.Id,
-					Description = _event.Description,
-					StartDate = _event.StartDate,
-					EndDate = _event.EndDate,
-					VenueId = _event.VenueId,
-					CategoryId = _event.CategoryId,
-					PriceBySeatId = _event.PriceBySeatId
-				};
-
-				return Ok(updateEventResponseDto);
+				return NotFound();
 			}
 		}
 
 		[HttpDelete]
 		public IActionResult RemoveEvent(int id)
 		{
-			Event? _event = context.Events.FirstOrDefault(_e => _e.Id == id);
-			if ( _event == null)
+			var result = _eventService.RemoveEventById(id);
+			if (result == HttpStatusCode.NotFound)
 			{
 				return NoContent() ;
 			}
 			else
 			{
-				context.Events.Remove( _event );
 				return Ok();
 			}
 		}

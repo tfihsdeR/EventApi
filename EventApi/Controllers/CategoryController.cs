@@ -2,6 +2,9 @@
 using EventApi.Data.Entities;
 using EventApi.Data.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Service.Services.Abstraction;
+using Service.Services.Concrete;
+using System.Net;
 
 namespace EventApi.Controllers
 {
@@ -9,16 +12,17 @@ namespace EventApi.Controllers
 	[ApiController]
 	public class CategoryController : ControllerBase
 	{
-		AppDbContext context = new AppDbContext();
+		private readonly ICategoryService _categoryService;
+
+		public CategoryController(ICategoryService categoryService)
+		{
+			_categoryService = categoryService;
+		}
 
 		[HttpGet]
 		public IActionResult GetAllCategories()
 		{
-			List<GetAllCategoriesResponseDto> categoryDtos = context.Categories.Select(c => new GetAllCategoriesResponseDto()
-			{
-				Id = c.Id,
-				Name = c.Name
-			}).ToList();
+			var categoryDtos = _categoryService.GetAllCategories();
 
 			return Ok(categoryDtos);
 		}
@@ -26,11 +30,7 @@ namespace EventApi.Controllers
 		[HttpGet("{id}")]
 		public IActionResult GetCategory(int id)
 		{
-			GetByIdCategoryResponseDto? categoryDto = context.Categories.Select(c => new GetByIdCategoryResponseDto()
-			{
-				Id= c.Id,
-				Name = c.Name
-			}).FirstOrDefault(c => c.Id == id);
+			var categoryDto = _categoryService.GetCategoryById(id);
 
 			if (categoryDto != null)
 			{
@@ -38,66 +38,44 @@ namespace EventApi.Controllers
 			}
 			else
 			{
-				return BadRequest();
+				return NotFound();
 			}
 		}
 
 		[HttpPost]
 		public IActionResult CreateCategory(CreateCategoryRequestDto categoryDto)
 		{
-			Category category = new Category()
-			{
-				Name = categoryDto.Name
-			};
-			context.Categories.Add(category);
-			context.SaveChanges();
-
-			CreateCategoryResponseDto categoryResponseDto = new CreateCategoryResponseDto()
-			{
-				Id = category.Id,
-				Name = categoryDto.Name
-			};
-			return Ok(categoryResponseDto);
+			CreateCategoryResponseDto result = _categoryService.CreateCategory(categoryDto);
+			return Ok(result);
 		}
 
 		[HttpPut("{id}")]
-		public IActionResult UpdateByIdCategory(int id, UpdateByIdCategoryRequestDto categoryDto)
+		public IActionResult UpdateCategory(int id, UpdateByIdCategoryRequestDto categoryDto)
 		{
-			Category? category = context.Categories.FirstOrDefault(c => c.Id == id);
+			var categoryResponseDto = _categoryService.UpdateCategory(id, categoryDto);
 
-			if (category != null)
+			if (categoryResponseDto != null)
 			{
-				category.Name = categoryDto.Name;
-				context.SaveChanges();
-
-				UpdateCategoryResponseDto categoryResponseDto = new UpdateCategoryResponseDto()
-				{
-					Id = category.Id,
-					Name = category.Name
-				};
 				return Ok(categoryResponseDto);
 			}
 			else
 			{
-				return BadRequest();
+				return NotFound();
 			}
 		}
 
 		[HttpDelete]
 		public IActionResult RemoveByIdCategory(int id)
 		{
-			Category? category = context.Categories.FirstOrDefault(c => c.Id == id);
+			HttpStatusCode httpStatusCode = _categoryService.RemoveCategoryById(id);
 
-			if (category != null)
+			if (httpStatusCode == HttpStatusCode.OK)
 			{
-				context.Categories.Remove(category);
-				context.SaveChanges();
-
 				return Ok();
 			}
 			else
 			{
-				return BadRequest();
+				return NotFound();
 			}
 		}
 	}
