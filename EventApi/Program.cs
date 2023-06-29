@@ -1,3 +1,4 @@
+using EventApi.Data.Repository;
 using Service.Services.Abstraction;
 using Service.Services.Concrete;
 
@@ -8,8 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IEventService, EventService>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IPriceBySeatService, PriceBySeatService>();
+builder.Services.AddScoped<IVenueService, VenueService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -27,5 +29,10 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var context = new AppDbContext())
+{
+    context.Database.EnsureCreated();
+}
 
 app.Run();

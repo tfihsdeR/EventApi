@@ -1,13 +1,12 @@
 ﻿using EventApi.Data.DTOs.EventDTOs;
 using EventApi.Data.Entities;
 using EventApi.Data.Repository;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Service.Services.Abstraction;
 using System.Net;
 
 namespace Service.Services.Concrete
 {
-	public class EventService : IEventService
+    public class EventService : IEventService
 	{
 		AppDbContext context = new AppDbContext();
 
@@ -15,12 +14,13 @@ namespace Service.Services.Concrete
 		{
 			Event _event = new Event()
 			{
+				Name = createDto.Name,
+				Organizor = createDto.Organizor,
 				Description = createDto.Description,
 				StartDate = createDto.StartDate,
 				EndDate = createDto.EndDate,
 				VenueId = createDto.VenueId,
-				CategoryId = createDto.CategoryId,
-				PriceBySeatId = createDto.PriceBySeatId
+				CategoryId = createDto.CategoryId
 			};
 
 			context.Events.Add(_event);
@@ -29,12 +29,13 @@ namespace Service.Services.Concrete
 			CreateEventResponseDto createEventResponseDto = new CreateEventResponseDto()
 			{
 				Id = _event.Id,
+				Name = _event.Name,
+				Organizor = _event.Organizor,
 				Description = _event.Description,
 				StartDate = _event.StartDate,
 				EndDate = _event.EndDate,
 				VenueId = _event.VenueId,
-				CategoryId = _event.CategoryId,
-				PriceBySeatId = _event.PriceBySeatId
+				CategoryId = _event.CategoryId
 			};
 
 			return createEventResponseDto;
@@ -45,12 +46,13 @@ namespace Service.Services.Concrete
 			List<GetAllEventResponseDto> getAllEventResponseDto = context.Events.Select(e => new GetAllEventResponseDto()
 			{
 				Id = e.Id,
+				Name = e.Name,
+				Organizor = e.Organizor,
 				Description = e.Description,
 				StartDate = e.StartDate,
 				EndDate = e.EndDate,
 				VenueId = e.VenueId,
-				CategoryId = e.CategoryId,
-				PriceBySeatId = e.PriceBySeatId
+				CategoryId = e.CategoryId
 			}).ToList();
 
 			return getAllEventResponseDto;
@@ -61,12 +63,13 @@ namespace Service.Services.Concrete
 			GetByIdEventResponseDto? getByIdEventResponseDto = context.Events.Select(e => new GetByIdEventResponseDto()
 			{
 				Id = e.Id,
+				Name = e.Name,
+				Organizor = e.Organizor,
 				Description = e.Description,
 				StartDate = e.StartDate,
 				EndDate = e.EndDate,
 				VenueId = e.VenueId,
-				CategoryId = e.CategoryId,
-				PriceBySeatId = e.PriceBySeatId
+				CategoryId = e.CategoryId
 			}).FirstOrDefault(dto => dto.Id == id);
 
 			return getByIdEventResponseDto;
@@ -82,6 +85,7 @@ namespace Service.Services.Concrete
 			else
 			{
 				context.Events.Remove(_event);
+				context.SaveChanges();
 				return HttpStatusCode.OK;
 			}
 		}
@@ -89,26 +93,34 @@ namespace Service.Services.Concrete
 		public UpdateEventResponseDto UpdateEvent(int id, UpdateEventRequestDto updateDto)
 		{
 			Event? _event = context.Events.FirstOrDefault(e => e.Id == id);
-			
-			_event.Description = updateDto.Description;
-			_event.StartDate = updateDto.StartDate;
-			_event.EndDate = updateDto.EndDate;
-			_event.VenueId = updateDto.VenueId;
-			_event.CategoryId = updateDto.CategoryId;
-			_event.PriceBySeatId = updateDto.PriceBySeatId;
 
-			context.SaveChanges();
+			UpdateEventResponseDto updateEventResponseDto = null;
 
-			UpdateEventResponseDto updateEventResponseDto = new UpdateEventResponseDto()
+
+            if (updateDto != null)
 			{
-				Id = _event.Id,
-				Description = _event.Description,
-				StartDate = _event.StartDate,
-				EndDate = _event.EndDate,
-				VenueId = _event.VenueId,
-				CategoryId = _event.CategoryId,
-				PriceBySeatId = _event.PriceBySeatId
-			};
+				_event.Name = updateDto.Name;
+				_event.Organizor = updateDto.Organizor;
+                _event.Description = updateDto.Description;
+                _event.StartDate = updateDto.StartDate;
+                _event.EndDate = updateDto.EndDate;
+                _event.VenueId = updateDto.VenueId;
+                _event.CategoryId = updateDto.CategoryId;
+
+                context.SaveChanges();
+
+                updateEventResponseDto = new UpdateEventResponseDto()
+                {
+                    Id = _event.Id,
+					Name = _event.Name,
+					Organizor = _event.Organizor,
+                    Description = _event.Description,
+                    StartDate = _event.StartDate,
+                    EndDate = _event.EndDate,
+                    VenueId = _event.VenueId,
+                    CategoryId = _event.CategoryId
+                };
+            }
 
 			return updateEventResponseDto;
 		}

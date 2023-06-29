@@ -12,7 +12,7 @@ namespace EventApi.Controllers
 	[ApiController]
 	public class CategoryController : ControllerBase
 	{
-		private readonly ICategoryService _categoryService;
+		readonly ICategoryService _categoryService;
 
 		public CategoryController(ICategoryService categoryService)
 		{

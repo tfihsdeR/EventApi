@@ -8,5 +8,6 @@
 		public decimal? PremiumSeatPrice { get; set; }
 		public decimal? SinglePrice { get; set; }
 		public bool IsStudent { get; set; }
-	}
+        public int EventId { get; set; }
+    }
 }

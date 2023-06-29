@@ -70,14 +70,21 @@ namespace Service.Services.Concrete
 		{
 			Category? category = context.Categories.FirstOrDefault(c => c.Id == id);
 
-			category.Name = categoryDto.Name;
-			context.SaveChanges();
+			UpdateCategoryResponseDto categoryResponseDto = null;
 
-			UpdateCategoryResponseDto categoryResponseDto = new UpdateCategoryResponseDto()
+
+            if (category != null)
 			{
-				Id = category.Id,
-				Name = category.Name
-			};
+                category.Name = categoryDto.Name;
+                context.SaveChanges();
+
+                categoryResponseDto = new UpdateCategoryResponseDto()
+                {
+                    Id = category.Id,
+                    Name = category.Name
+                };
+            }
+			
 			return categoryResponseDto;
 		}
 	}

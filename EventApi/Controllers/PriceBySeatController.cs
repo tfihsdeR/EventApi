@@ -2,6 +2,8 @@
 using EventApi.Data.Entities;
 using EventApi.Data.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Service.Services.Abstraction;
+using System.Net;
 
 namespace EventApi.Controllers
 {
@@ -9,35 +11,31 @@ namespace EventApi.Controllers
 	[ApiController]
 	public class PriceBySeatController : ControllerBase
 	{
-		AppDbContext context = new AppDbContext();
+		readonly IPriceBySeatService _priceBySeatService;
+        public PriceBySeatController(IPriceBySeatService priceBySeatService)
+        {
+			_priceBySeatService = priceBySeatService;
+        }
 
-		[HttpGet]
+        [HttpGet]
 		public IActionResult GetAllPriceBySeats()
 		{
-			List<GetAllPriceBySeatResponseDto> responseDto = context.PriceBySeats.Select(pbc => new GetAllPriceBySeatResponseDto()
-			{
-				Id = pbc.Id,
-				StandardSeatPrice = pbc.StandardSeatPrice,
-				VIPSeatPrice = pbc.VIPSeatPrice,
-				PremiumSeatPrice = pbc.PremiumSeatPrice,
-				SinglePrice = pbc.SinglePrice,
-				IsStudent = pbc.IsStudent
-			}).ToList();
+			List<GetAllPriceBySeatResponseDto> responseDto = _priceBySeatService.GetAllPriceBySeats();
 
-			return Ok(responseDto);
+			if (responseDto.Any())
+			{
+				return Ok(responseDto);
+			}
+			else
+			{
+				return NotFound();
+			}
 		}
 
 		[HttpGet("{id}")]
 		public IActionResult GetByIdPriceBySeat(int id)
 		{
-			GetByIdPriceBySeatResponseDto? response = context.PriceBySeats.Select(pbc => new GetByIdPriceBySeatResponseDto()
-			{
-				Id = pbc.Id,
-				StandardSeatPrice = pbc.StandardSeatPrice,
-				PremiumSeatPrice = pbc.PremiumSeatPrice,
-				SinglePrice = pbc.SinglePrice,
-				IsStudent = pbc.IsStudent
-			}).FirstOrDefault(pbc => pbc.Id == id);
+			GetByIdPriceBySeatResponseDto? response = _priceBySeatService.GetPriceBySeatById(id);
 
 			if (response != null)
 			{
@@ -45,84 +43,45 @@ namespace EventApi.Controllers
 			}
 			else
 			{
-				return BadRequest();
+				return NotFound();
 			}
 		}
 
 		[HttpPost]
 		public IActionResult CreatePriceBySeat(CreatePriceBySeatRequestDto priceBySeatDto)
 		{
-			PriceBySeat priceBySeat = new PriceBySeat()
-			{
-				StandardSeatPrice = priceBySeatDto.StandardSeatPrice,
-				VIPSeatPrice = priceBySeatDto.VIPSeatPrice,
-				PremiumSeatPrice = priceBySeatDto.PremiumSeatPrice,
-				SinglePrice = priceBySeatDto.SinglePrice,
-				IsStudent = priceBySeatDto.IsStudent
-			};
+			CreatePriceBySeatResponseDto response = _priceBySeatService.CreatePriceBySeat(priceBySeatDto);
 
-			context.PriceBySeats.Add(priceBySeat);
-			context.SaveChanges();
-
-			CreatePriceBySeatResponseDto response = new CreatePriceBySeatResponseDto()
-			{
-				Id = priceBySeat.Id,
-				VIPSeatPrice = priceBySeat.VIPSeatPrice,
-				PremiumSeatPrice = priceBySeat.PremiumSeatPrice,
-				SinglePrice = priceBySeat.SinglePrice,
-				IsStudent = priceBySeat.IsStudent,
-				StandardSeatPrice = priceBySeat.StandardSeatPrice
-			};
-
-			return Ok(response);
-		}
+            return Ok(response);
+        }
 
 		[HttpPut("{id}")]
-		public IActionResult UpdateByIdPriceBySeat(UpdateByIdPriceBySeatRequestDto updatePriceBySeatDtop, int id)
+		public IActionResult UpdateByIdPriceBySeat(UpdateByIdPriceBySeatRequestDto updatePriceBySeatDto, int id)
 		{
-			PriceBySeat? priceBySeat = context.PriceBySeats.FirstOrDefault(pbc => pbc.Id == id);
+			UpdatePriceBySeatResponseDto priceBySeat = _priceBySeatService.UpdatePriceBySeat(id, updatePriceBySeatDto);
 
 			if (priceBySeat == null)
 			{
-				return BadRequest();
+				return NotFound();
 			}
 			else
 			{
-				priceBySeat.StandardSeatPrice = updatePriceBySeatDtop.StandardSeatPrice;
-				priceBySeat.VIPSeatPrice = updatePriceBySeatDtop.VIPSeatPrice;
-				priceBySeat.PremiumSeatPrice = updatePriceBySeatDtop.PremiumSeatPrice;
-				priceBySeat.IsStudent = updatePriceBySeatDtop.IsStudent;
-				priceBySeat.SinglePrice = updatePriceBySeatDtop.SinglePrice;
-
-				context.SaveChanges();
-
-				UpdatePriceBySeatResponseDto responseDto = new UpdatePriceBySeatResponseDto()
-				{
-					Id = priceBySeat.Id,
-					StandardSeatPrice = priceBySeat.StandardSeatPrice,
-					VIPSeatPrice = priceBySeat.VIPSeatPrice,
-					PremiumSeatPrice = priceBySeat.PremiumSeatPrice,
-					IsStudent = priceBySeat.IsStudent,
-					SinglePrice = priceBySeat.SinglePrice
-				};
-
-				return Ok(responseDto);
+				return Ok(priceBySeat);
 			}
 		}
 
 		[HttpDelete]
 		public IActionResult RemoveByIdPriceBySeat(int id)
 		{
-			PriceBySeat? priceBySeat = context.PriceBySeats.FirstOrDefault(pbc => pbc.Id == id);
+			var result = _priceBySeatService.RemovePriceBySeatById(id);
 
-			if (priceBySeat != null)
+			if (result == HttpStatusCode.OK)
 			{
-				context.PriceBySeats.Remove(priceBySeat);
 				return Ok();
 			}
 			else
 			{
-				return BadRequest();
+				return NotFound();
 			}
 		}
 	}

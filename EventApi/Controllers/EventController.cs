@@ -11,7 +11,6 @@ namespace EventApi.Controllers
 	[ApiController]
 	public class EventController : ControllerBase
 	{
-		AppDbContext context = new AppDbContext();
 		readonly IEventService _eventService;
 
 		public EventController(IEventService eventService)

@@ -1,10 +1,9 @@
 ﻿using EventApi.Data.DTOs.CategoryDtos;
-using EventApi.Data.Entities;
 using System.Net;
 
 namespace Service.Services.Abstraction
 {
-	public interface ICategoryService
+    public interface ICategoryService
 	{
 		List<GetAllCategoriesResponseDto> GetAllCategories();
 		GetByIdCategoryResponseDto GetCategoryById(int id);
