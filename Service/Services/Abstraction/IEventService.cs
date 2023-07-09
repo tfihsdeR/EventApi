@@ -1,4 +1,6 @@
-﻿using EventApi.Data.DTOs.EventDTOs;
+﻿using Entity.DTOs.EventDTOs.Create;
+using Entity.DTOs.EventDTOs.Get;
+using Entity.DTOs.EventDTOs.Update;
 using System.Net;
 
 namespace Service.Services.Abstraction
@@ -10,5 +12,7 @@ namespace Service.Services.Abstraction
         CreateEventResponseDto CreateEvent(CreateEventRequestDto createDto);
         UpdateEventResponseDto UpdateEvent(int id, UpdateEventRequestDto updateDto);
         HttpStatusCode RemoveEventById(int id);
+
+        List<GetAllEventsBySearchedKeywordInOrganizorAndNameResponseDto> GetAllEventsByKeyword(string keyword);
     }
 }

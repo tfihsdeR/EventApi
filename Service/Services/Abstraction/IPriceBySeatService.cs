@@ -1,4 +1,6 @@
-﻿using EventApi.Data.DTOs.PriceBySeatDtos;
+﻿using Entity.DTOs.PriceBySeatDtos.Create;
+using Entity.DTOs.PriceBySeatDtos.Get;
+using Entity.DTOs.PriceBySeatDtos.Update;
 using System.Net;
 
 namespace Service.Services.Abstraction
@@ -10,5 +12,8 @@ namespace Service.Services.Abstraction
         CreatePriceBySeatResponseDto CreatePriceBySeat(CreatePriceBySeatRequestDto createDto);
         UpdatePriceBySeatResponseDto UpdatePriceBySeat(int id, UpdateByIdPriceBySeatRequestDto updateDto);
         HttpStatusCode RemovePriceBySeatById(int id);
+
+
+        List<GetAllPriceBySeatsByEventIdResponseDto> GetAllPriceBySeatsByEventId(int eventId);
     }
 }

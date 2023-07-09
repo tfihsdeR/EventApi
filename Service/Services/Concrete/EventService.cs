@@ -1,4 +1,6 @@
-﻿using EventApi.Data.DTOs.EventDTOs;
+﻿using Entity.DTOs.EventDTOs.Create;
+using Entity.DTOs.EventDTOs.Get;
+using Entity.DTOs.EventDTOs.Update;
 using EventApi.Data.Entities;
 using EventApi.Data.Repository;
 using Service.Services.Abstraction;
@@ -58,7 +60,7 @@ namespace Service.Services.Concrete
 			return getAllEventResponseDto;
 		}
 
-		public GetByIdEventResponseDto GetEventById(int id)
+        public GetByIdEventResponseDto GetEventById(int id)
 		{
 			GetByIdEventResponseDto? getByIdEventResponseDto = context.Events.Select(e => new GetByIdEventResponseDto()
 			{
@@ -124,5 +126,23 @@ namespace Service.Services.Concrete
 
 			return updateEventResponseDto;
 		}
-	}
+
+
+        public List<GetAllEventsBySearchedKeywordInOrganizorAndNameResponseDto> GetAllEventsByKeyword(string keyword)
+        {
+            var response = context.Events.Where(e => e.Name.ToLower().Contains(keyword.ToLower()) || e.Organizor.ToLower().Contains(keyword.ToLower())).Select(e => new GetAllEventsBySearchedKeywordInOrganizorAndNameResponseDto()
+			{
+				Id = e.Id,
+				Name = e.Name,
+				Organizor = e.Organizor,
+				Description = e.Description,
+				StartDate = e.StartDate,
+				EndDate = e.EndDate,
+				VenueId = e.VenueId,
+				CategoryId = e.CategoryId
+			}).ToList();
+
+			return response;
+        }
+    }
 }

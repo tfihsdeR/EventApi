@@ -1,4 +1,6 @@
-﻿using EventApi.Data.DTOs.VenueDTOs;
+﻿using Entity.DTOs.VenueDTOs.Create;
+using Entity.DTOs.VenueDTOs.Get;
+using Entity.DTOs.VenueDTOs.SingleVenueDTOs;
 using EventApi.Data.Entities;
 using EventApi.Data.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +9,7 @@ using System.Net;
 
 namespace EventApi.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class VenueController : ControllerBase
 	{
@@ -82,5 +84,19 @@ namespace EventApi.Controllers
 				return NoContent();
 			}
 		}
-	}
+
+		[HttpGet("venues/{eventId}")]
+		public IActionResult GetAllVenuesByEventId(int eventId)
+		{
+			var result = _venueService.GetAllVenuesByEventId(eventId);
+			if (result.Any())
+			{
+				return Ok(result);
+			}
+			else
+			{
+				return NoContent();
+			}
+		}
+    }
 }

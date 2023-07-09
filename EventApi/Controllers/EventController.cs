@@ -1,4 +1,6 @@
-﻿using EventApi.Data.DTOs.EventDTOs;
+﻿using Entity.DTOs.EventDTOs.Create;
+using Entity.DTOs.EventDTOs.Get;
+using Entity.DTOs.EventDTOs.Update;
 using EventApi.Data.Entities;
 using EventApi.Data.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +9,7 @@ using System.Net;
 
 namespace EventApi.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class EventController : ControllerBase
 	{
@@ -83,5 +85,20 @@ namespace EventApi.Controllers
 				return Ok();
 			}
 		}
-	}
+
+		[HttpGet("events/keyword")]
+		public IActionResult GetAllEventsByKeyword(string keyword)
+		{
+			var result = _eventService.GetAllEventsByKeyword(keyword);
+
+			if (result.Any())
+			{
+				return Ok(result);
+			}
+			else
+			{
+				return NotFound();
+			}
+		}
+    }
 }

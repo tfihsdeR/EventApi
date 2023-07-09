@@ -34,53 +34,59 @@ namespace EventApi.Data.Repository
 			// CONCERT	
 			new Venue()
 			{
-				Id = 1,
+                Name = "Kuruçeşme Açık Hava Konser Alanı",
+                Id = 1,
 				City = "İstanbul",
 				District = "Beşiktaş",
 				Detail = "Ortaköy, Muallim Naci Cd. No:50, 34347",
-				GoogleMapLink = "https://goo.gl/maps/jDZvwyybkK4raQkk8"
+                GoogleMapSource = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3008.789539475529!2d29.0338329!3d41.0517313!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab7e68aa724f3%3A0xecbfca61072268cc!2zS3VydcOnZcWfbWUgQcOnxLFrIEhhdmEgS29uc2VyIEFsYW7EsQ!5e0!3m2!1str!2str!4v1688807271405!5m2!1str!2str"
             },
             new Venue()
             {
+                Name = "Cemal Resiş Bey Konser Salonu",
                 Id = 2,
                 City = "İstanbul",
                 District = "Şişli",
                 Detail = "Harbiye, Dar'ül Bedayi Cad No:6, 34371",
-                GoogleMapLink = "https://goo.gl/maps/C86sC9z7fQiX315t5"
+                GoogleMapSource = "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d24071.640092972375!2d28.9520605!3d41.0481129!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab70d190ad437%3A0x6512439e9fc9cf24!2sCemal%20Re%C5%9Fit%20Rey%20Konser%20Salonu!5e0!3m2!1str!2str!4v1688807461722!5m2!1str!2str"
             },
 			// ART GALERY
 			new Venue()
 			{
-				Id = 3,
+                Name = "VENÜS Sanat Galerisi",
+                Id = 3,
 				City = "İstanbul",
 				District = "Kadıköy",
 				Detail = "Göztepe, Mustafa Kaya Sokağı No:2, 34730",
-				GoogleMapLink = "https://goo.gl/maps/eBoJeSZVwDJqEwNy9"
+				GoogleMapSource = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3012.0522817311316!2d29.0594707!3d40.980336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cac7900c7543f1%3A0x4e07fed89a02649d!2sVEN%C3%9CS%20Sanat%20Galerisi!5e0!3m2!1str!2str!4v1688807497270!5m2!1str!2str"
             },
             new Venue()
 			{
+                Name = "Schneidertempel Sanat Merkezi",
 				Id = 4,
 				City = "İstanbul",
 				District = "Beyoğlu",
 				Detail = "Bereketzade, Bankalar Cad./felek Sok. No:1, 34421",
-				GoogleMapLink = "https://goo.gl/maps/vRhJh3jHQsmK6XFF8"
+				GoogleMapSource = "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6020.10591769681!2d28.9715631!3d41.0240973!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab9e7c58af4e5%3A0x2dcdd01a3c1cc35!2sSchneidertempel%20Sanat%20Merkezi!5e0!3m2!1str!2str!4v1688807528709!5m2!1str!2str"
             },
 			// THEATRE
 			new Venue()
 			{
-				Id = 5,
+                Name = "Müjdat Gezen Tiyatrosu",
+                Id = 5,
 				City = "İstanbul",
 				District = "Kadıköy",
 				Detail = "Osmanağa, Kırtasiyeci Sk. No:46, 34714",
-				GoogleMapLink = "https://goo.gl/maps/ftWuewkZpPHKdVm58"
+				GoogleMapSource = "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d96436.80988374872!2d28.9755196!3d40.9453306!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab868ab8c94db%3A0x934e3913b6413bef!2sM%C3%BCjdat%20Gezen%20Tiyatrosu!5e0!3m2!1str!2str!4v1688807560452!5m2!1str!2str"
             },
             new Venue()
             {
+                Name = "İBB Şehir Tiyatroları Musahipzade Celâl Sahnesi",
                 Id = 6,
                 City = "İstanbul",
                 District = "Üsküdar",
                 Detail = "Aziz Mahmut Hüdayi, Halk Cd. No:84, 34672",
-                GoogleMapLink = "https://goo.gl/maps/1Xo9Lin9ipx4sHCZA"
+                GoogleMapSource = "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d192763.41949594917!2d28.6002293!3d40.983048!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab8264b413551%3A0xb8f9f2cf89b84160!2s%C4%B0BB%20%C5%9Eehir%20Tiyatrolar%C4%B1%20Musahipzade%20Cel%C3%A2l%20Sahnesi!5e0!3m2!1str!2str!4v1688807590741!5m2!1str!2str"
             });
 
 			modelBuilder.Entity<Event>().HasData(
@@ -93,8 +99,9 @@ namespace EventApi.Data.Repository
 				StartDate = new DateTime(2023, 7, 13),
 				EndDate = new DateTime(2023, 7, 15),
 				VenueId = 1,
-				CategoryId = 3
-			},
+				CategoryId = 3,
+                Description = "Tarkan Concert at Kuruçeşme Açık Hava Konser Alanı."
+            },
 			new Event()
 			{
 				Id = 2,
@@ -103,8 +110,9 @@ namespace EventApi.Data.Repository
                 StartDate = new DateTime(2023, 7, 16),
 				EndDate = new DateTime(2023, 7, 19),
 				VenueId = 2,
-				CategoryId = 3
-			},
+				CategoryId = 3,
+                Description = "Jason Derulo Concert at Cemal Resiş Bey Konser Salonu."
+            },
 			new Event()
 			{
 				Id = 3,
@@ -113,8 +121,9 @@ namespace EventApi.Data.Repository
                 StartDate = new DateTime(2023, 9, 10),
 				EndDate = new DateTime(2023, 9, 15),
 				VenueId = 2,
-				CategoryId = 3
-			},
+				CategoryId = 3,
+                Description = "Şebnem Ferah Concert at Cemal Reşit Rey Konser Salonu."
+            },
 			// ART GALERY
 			new Event()
 			{
@@ -124,7 +133,8 @@ namespace EventApi.Data.Repository
 				StartDate = new DateTime(2023, 8, 21),
 				EndDate = new DateTime(2023, 8, 30),
 				VenueId = 3,
-				CategoryId = 2
+				CategoryId = 2,
+                Description = "Leonardo da Vinci Art Galery at VENÜS Sanat Galerisi."
             },
             new Event()
             {
@@ -134,7 +144,8 @@ namespace EventApi.Data.Repository
                 StartDate = new DateTime(2023, 10, 11),
                 EndDate = new DateTime(2023, 10, 27),
                 VenueId = 4,
-                CategoryId = 2
+                CategoryId = 2,
+                Description = "Naruto Art Galery at Schneidertempel Sanat Merkezi."
             },
             // THEATRE
             new Event()
@@ -145,7 +156,8 @@ namespace EventApi.Data.Repository
                 StartDate = new DateTime(2023, 9, 20),
                 EndDate = new DateTime(2023, 10, 2),
                 VenueId = 5,
-                CategoryId = 1
+                CategoryId = 1,
+                Description = "Hamlet Theatre at Müjdat Gezen Tiyatrosu."
             },
             new Event()
             {
@@ -155,7 +167,8 @@ namespace EventApi.Data.Repository
                 StartDate = new DateTime(2023, 8, 10),
                 EndDate = new DateTime(2023, 8, 21),
                 VenueId = 6,
-                CategoryId = 1
+                CategoryId = 1,
+                Description = "Tempest Theatre at İBB Şehir Tiyatroları Musahipzade Celâl Sahnesi."
             });
 
 			modelBuilder.Entity<PriceBySeat>().HasData(
@@ -350,38 +363,38 @@ namespace EventApi.Data.Repository
             },
             new Image()
             {
-                Id = 14,
+                Id = 15,
                 ImageUrl = "https://www.gotokyo.org/en/spot/ev290/images/main.jpg",
                 EventId = 5
             },
             // THEATRE
             new Image()
             {
-                Id = 15,
+                Id = 16,
                 ImageUrl = "https://i.ytimg.com/vi/Oq5HKX1vicM/maxresdefault.jpg",
                 EventId = 6
             },
             new Image()
             {
-                Id = 16,
+                Id = 17,
                 ImageUrl = "https://media.americanshakespearecenter.com/app/uploads/2017/10/16191919/hamlet_2018_web1.jpg",
                 EventId = 6
             },
             new Image()
             {
-                Id = 17,
+                Id = 18,
                 ImageUrl = "https://mdtheatreguide.com/wp-content/uploads/2018/01/HAMLET2018_0073-e1517186502587-550x348.jpg",
                 EventId = 6
             },
             new Image()
             {
-                Id = 18,
+                Id = 19,
                 ImageUrl = "https://www.theoldglobe.org/link/beaa065ced414a8a8760da8c048cfbd8.aspx?id=30870",
                 EventId = 7
             },
             new Image()
             {
-                Id = 19,
+                Id = 20,
                 ImageUrl = "https://i8a4b7e5.stackpathcdn.com/wp-content/uploads/2017/07/the-tempest-topher-mcgrillis-1.jpg",
                 EventId = 7
             });
@@ -389,7 +402,7 @@ namespace EventApi.Data.Repository
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.UseSqlServer("server=.; database=ErdincEventApi; trusted_connection=true");
+			optionsBuilder.UseSqlServer("server=(localdb)\\mssqllocaldb; database=ErdincEventApi; trusted_connection=true");
 		}
 	}
 }

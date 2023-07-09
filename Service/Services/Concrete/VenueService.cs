@@ -1,4 +1,6 @@
-﻿using EventApi.Data.DTOs.VenueDTOs;
+﻿using Entity.DTOs.VenueDTOs.Create;
+using Entity.DTOs.VenueDTOs.Get;
+using Entity.DTOs.VenueDTOs.SingleVenueDTOs;
 using EventApi.Data.Entities;
 using EventApi.Data.Repository;
 using Service.Services.Abstraction;
@@ -14,22 +16,24 @@ namespace Service.Services.Concrete
         {
             Venue venue = new Venue()
             {
+                Name = createDto.Name,
                 City = createDto.City,
                 District = createDto.District,
                 Latitude = createDto.Latitude,
                 Longitude = createDto.Longitude,
-                GoogleMapLink = createDto.GoogleMapLink
+                GoogleMapSource = createDto.GoogleMapSource
             };
             context.Venues.Add(venue);
             context.SaveChanges();
 
             CreateVenueResponseDto createVenueResponseDto = new CreateVenueResponseDto()
             {
+                Name = venue.Name,
                 City = venue.City,
                 District = venue.District,
                 Latitude = venue.Latitude,
                 Longitude = venue.Longitude,
-                GoogleMapLink = venue.GoogleMapLink
+                GoogleMapSource = venue.GoogleMapSource
             };
             return createVenueResponseDto;
         }
@@ -38,27 +42,28 @@ namespace Service.Services.Concrete
         {
             List<GetAllVenuesResponseDto> getAllVenuesResponseDtos = context.Venues.Select(v => new GetAllVenuesResponseDto()
             {
+                Name = v.Name,
                 Id = v.Id,
                 City = v.City,
                 District = v.District,
                 Latitude = v.Latitude,
                 Longitude = v.Longitude,
-                GoogleMapLink = v.GoogleMapLink
+                GoogleMapSource = v.GoogleMapSource
             }).ToList();
 
             return getAllVenuesResponseDtos;
         }
-
         public GetByIdVenueResponseDto GetVenueById(int id)
         {
             GetByIdVenueResponseDto? getByIdVenueResponseDto = context.Venues.Select(v => new GetByIdVenueResponseDto()
             {
+                Name = v.Name,
                 Id = v.Id,
                 City = v.City,
                 District = v.District,
                 Latitude = v.Latitude,
                 Longitude = v.Longitude,
-                GoogleMapLink = v.GoogleMapLink
+                GoogleMapSource = v.GoogleMapSource
             }).FirstOrDefault(dto => dto.Id == id);
 
             return getByIdVenueResponseDto;
@@ -86,24 +91,45 @@ namespace Service.Services.Concrete
 
             if (venue != null)
             {
+                venue.Name = updateDto.Name;
                 venue.City = updateDto.City;
                 venue.District = updateDto.District;
                 venue.Latitude = updateDto.Latitude;
                 venue.Longitude = updateDto.Longitude;
-                venue.GoogleMapLink = updateDto.GoogleMapLink;
+                venue.GoogleMapSource = updateDto.GoogleMapSource;
                 context.SaveChanges();
 
                 updateVenueResponseDto = new UpdateVenueResponseDto()
                 {
+                    Name = venue.Name,
                     City = venue.City,
                     District = venue.District,
                     Latitude = venue.Latitude,
                     Longitude = venue.Longitude,
-                    GoogleMapLink = venue.GoogleMapLink
+                    GoogleMapSource = venue.GoogleMapSource
                 };
             }
 
             return updateVenueResponseDto;
+        }
+
+
+
+        public List<GetAllVenuesByEventIdResponseDto> GetAllVenuesByEventId(int eventId)
+        {
+            List<GetAllVenuesByEventIdResponseDto> getAllVenuesByEventIdResponseDtos = context.Events.Where(e => e.Id == eventId).Select(e => new GetAllVenuesByEventIdResponseDto()
+            {
+                Name = e.Name,
+                Id = e.Venue.Id,
+                City = e.Venue.City,
+                District = e.Venue.District,
+                Detail = e.Venue.Detail,
+                Latitude = e.Venue.Latitude,
+                Longitude = e.Venue.Longitude,
+                GoogleMapSource = e.Venue.GoogleMapSource
+            }).ToList();
+
+            return getAllVenuesByEventIdResponseDtos;
         }
     }
 }

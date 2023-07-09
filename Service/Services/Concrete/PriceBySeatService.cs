@@ -1,4 +1,6 @@
-﻿using EventApi.Data.DTOs.PriceBySeatDtos;
+﻿using Entity.DTOs.PriceBySeatDtos.Create;
+using Entity.DTOs.PriceBySeatDtos.Get;
+using Entity.DTOs.PriceBySeatDtos.Update;
 using EventApi.Data.Entities;
 using EventApi.Data.Repository;
 using Service.Services.Abstraction;
@@ -46,7 +48,8 @@ namespace Service.Services.Concrete
                 VIPSeatPrice = pbc.VIPSeatPrice,
                 PremiumSeatPrice = pbc.PremiumSeatPrice,
                 SinglePrice = pbc.SinglePrice,
-                IsStudent = pbc.IsStudent
+                IsStudent = pbc.IsStudent,
+                EventId = pbc.EventId
             }).ToList();
 
             return responseDto;
@@ -109,6 +112,24 @@ namespace Service.Services.Concrete
             }
 
             return responseDto;
+        }
+
+
+
+        public List<GetAllPriceBySeatsByEventIdResponseDto> GetAllPriceBySeatsByEventId(int eventId)
+        {
+            var response = context.PriceBySeats.Where(pbc => pbc.EventId == eventId).Select(pbc => new GetAllPriceBySeatsByEventIdResponseDto()
+            {
+                Id = pbc.Id,
+                StandardSeatPrice = pbc.StandardSeatPrice,
+                VIPSeatPrice = pbc.VIPSeatPrice,
+                PremiumSeatPrice = pbc.PremiumSeatPrice,
+                IsStudent = pbc.IsStudent,
+                SinglePrice = pbc.SinglePrice,
+                EventId = pbc.EventId
+            }).ToList();
+
+            return response;
         }
     }
 }

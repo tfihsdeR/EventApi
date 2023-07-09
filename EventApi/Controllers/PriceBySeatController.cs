@@ -1,4 +1,6 @@
-﻿using EventApi.Data.DTOs.PriceBySeatDtos;
+﻿using Entity.DTOs.PriceBySeatDtos.Create;
+using Entity.DTOs.PriceBySeatDtos.Get;
+using Entity.DTOs.PriceBySeatDtos.Update;
 using EventApi.Data.Entities;
 using EventApi.Data.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +9,7 @@ using System.Net;
 
 namespace EventApi.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class PriceBySeatController : ControllerBase
 	{
@@ -84,5 +86,22 @@ namespace EventApi.Controllers
 				return NotFound();
 			}
 		}
-	}
+
+
+
+		[HttpGet("priceBySeats/{eventId}")]
+		public IActionResult GetAllPriceBySeatsByEventId(int eventId)
+		{
+			var result = _priceBySeatService.GetAllPriceBySeatsByEventId(eventId);
+			if (result.Any())
+			{
+				return Ok(result);
+			}
+			else
+			{
+				return NotFound();
+			}
+		}
+
+    }
 }

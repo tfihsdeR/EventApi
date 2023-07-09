@@ -1,4 +1,6 @@
-﻿using EventApi.Data.DTOs.ImageDTOs;
+﻿using Entity.DTOs.ImageDTOs.Create;
+using Entity.DTOs.ImageDTOs.Get;
+using Entity.DTOs.ImageDTOs.Update;
 using EventApi.Data.Entities;
 using EventApi.Data.Repository;
 using Service.Services.Abstraction;
@@ -89,6 +91,18 @@ namespace Service.Services.Concrete
             }
             
             return updateImageResponseDto;
+        }
+
+        public List<GetAllVenuesByKeywordResponseDto> GetAllImagesByKeyword (string keyword)
+        {
+            var result = context.Images.Where(i => i.Event.Name.ToLower().Contains(keyword.ToLower()) || i.Event.Organizor.ToLower().Contains(keyword.ToLower())).Select(i => new GetAllVenuesByKeywordResponseDto()
+            {
+                Id = i.Id,
+                ImageUrl = i.ImageUrl,
+                EventId = i.EventId
+            }).ToList();
+
+            return result;
         }
     }
 }

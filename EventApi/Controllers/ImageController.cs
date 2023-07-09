@@ -1,5 +1,6 @@
-﻿using EventApi.Data.DTOs.ImageDTOs;
-using EventApi.Data.Repository;
+﻿using Entity.DTOs.ImageDTOs.Create;
+using Entity.DTOs.ImageDTOs.Get;
+using Entity.DTOs.ImageDTOs.Update;
 using Microsoft.AspNetCore.Mvc;
 using Service.Services.Abstraction;
 using System.Net;
@@ -82,5 +83,19 @@ namespace EventApi.Controllers
 				return NoContent();
 			}
 		}
-	}
+
+		[HttpGet("Image/{keyword}")]
+		public IActionResult GetAllImagesByKeyword(string keyword)
+		{
+			var result = _imageService.GetAllImagesByKeyword(keyword);
+			if (result.Any())
+			{
+				return Ok(result);
+			}
+			else
+			{
+				return NoContent();
+			}
+		}
+    }
 }

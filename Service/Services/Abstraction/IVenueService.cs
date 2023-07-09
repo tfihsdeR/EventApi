@@ -1,5 +1,7 @@
-﻿using EventApi.Data.DTOs.PriceBySeatDtos;
-using EventApi.Data.DTOs.VenueDTOs;
+﻿using Entity.DTOs.ImageDTOs.Get;
+using Entity.DTOs.VenueDTOs.Create;
+using Entity.DTOs.VenueDTOs.Get;
+using Entity.DTOs.VenueDTOs.SingleVenueDTOs;
 using System.Net;
 
 namespace Service.Services.Abstraction
@@ -11,5 +13,7 @@ namespace Service.Services.Abstraction
         CreateVenueResponseDto CreateVenue(CreateVenueRequestDto createDto);
         UpdateVenueResponseDto UpdateVenue(int id, UpdateVenueRequestDto updateDto);
         HttpStatusCode RemoveVenueById(int id);
+
+        List<GetAllVenuesByEventIdResponseDto> GetAllVenuesByEventId(int eventId);
     }
 }
