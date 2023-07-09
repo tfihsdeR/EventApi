@@ -98,5 +98,19 @@ namespace EventApi.Controllers
 				return NoContent();
 			}
 		}
+
+		[HttpGet("venue/{keyword}")]
+		public IActionResult GetAllVenuesByString(string keyword)
+		{
+			var response = _venueService.GetAllVenuesByString(keyword);
+			if (response.Any())
+			{
+				return Ok(response);
+			}
+			else
+			{
+				return NoContent();
+			}
+		}
     }
 }

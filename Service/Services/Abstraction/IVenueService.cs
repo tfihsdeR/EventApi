@@ -15,5 +15,6 @@ namespace Service.Services.Abstraction
         HttpStatusCode RemoveVenueById(int id);
 
         List<GetAllVenuesByEventIdResponseDto> GetAllVenuesByEventId(int eventId);
+        List<GetAllVenuesByStringByEventNameAndOrganizorResponseDto> GetAllVenuesByString(string keyword);
     }
 }

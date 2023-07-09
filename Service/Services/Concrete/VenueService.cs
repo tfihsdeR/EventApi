@@ -131,5 +131,22 @@ namespace Service.Services.Concrete
 
             return getAllVenuesByEventIdResponseDtos;
         }
+
+        public List<GetAllVenuesByStringByEventNameAndOrganizorResponseDto> GetAllVenuesByString(string keyword)
+        {
+            var response = context.Events.Where(e => e.Name.ToLower().Contains(keyword.ToLower()) || e.Organizor.ToLower().Contains(keyword.ToLower()))
+                .Select(e => new GetAllVenuesByStringByEventNameAndOrganizorResponseDto()
+                {
+                    Name = e.Venue.Name,
+                    Id = e.Venue.Id,
+                    City = e.Venue.City,
+                    District = e.Venue.District,
+                    Detail = e.Venue.Detail,
+                    Latitude = e.Venue.Latitude,
+                    Longitude = e.Venue.Longitude,
+                    GoogleMapSource = e.Venue.GoogleMapSource
+                }).ToList();
+            return response;
+        }
     }
 }
