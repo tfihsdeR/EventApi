@@ -3,7 +3,9 @@
 ## DESCRIPTIONS
 
 You don't need to configure the course options. If you face with a problem with course please inform me or try to manage it. The database and some contents will be added automatically. You can reach the database from windows pc by the following link: 
+
 ThisPc/Users/PcName/AppData/Local/Microsoft/Microsoft SQL Server Local DB/Instances/mssqllocaldb
+
 Please don't forget change the PCName with your pc name.
 
 ## CATEGORY
