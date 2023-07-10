@@ -13,6 +13,7 @@ Please don't forget change the PCName with your pc name.
 ### Get
 
 [GET]	 /api/Category
+
 [GET]	 /api/Category/id
 
 ### Post
@@ -32,7 +33,9 @@ Please don't forget change the PCName with your pc name.
 ### Get
 
 [GET]  /api/Event
+
 [GET]	 /api/Event/id
+
 [GET]	 /api/Event/events/keyword
 
 ### Post
@@ -52,7 +55,9 @@ Please don't forget change the PCName with your pc name.
 ### Get
 
 [GET]	 /api/Image
+
 [GET]	 /api/Image/id
+
 [GET]	 /api/Image/Image/Keyword
 
 ### Post
@@ -72,7 +77,9 @@ Please don't forget change the PCName with your pc name.
 ### Get
 
 [GET]	 /api/PriceBySeat
+
 [GET]	 /api/PriceBySeat/id
+
 [GET]	 /api/PriceBySeat/priceBySeats/eventId
 
 ### Post
@@ -93,8 +100,11 @@ Please don't forget change the PCName with your pc name.
 ### Get
 
 [GET]	 /api/Venue
+
 [GET]	 /api/Venue/id
+
 [GET]	 /api/Venue/venues/eventId
+
 [GET]	 /api/Venue/venue/keyword
 
 ### Post
